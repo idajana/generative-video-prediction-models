@@ -1,7 +1,7 @@
 # Visual Transition Models
 This project includes implementation of generative models for action-based video frame prediction. I originally used apply them to data from laparoscopic surgeries in scope of my Masterthesis. The data is therefore omitted and the old instructions are moved here.  
 
-#Data preparation
+# Data preparation
 
 Before starting the data preprocessing the data should be divided into train/val/test directories (it is important that they have these 3 exact names). Each directory should have one rollout inside with corresponding images and xml files:
 
@@ -112,4 +112,4 @@ policy evolution, 2018.
 * Differentiable Multi-Scale Structural Similarity (SSIM) index
     * Github [code](https://github.com/jorge-pessoa/pytorch-msssim)
 
-#License
+
