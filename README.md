@@ -1,26 +1,9 @@
 # Visual Transition Models
-This project includes implementation of generative models for action-based video frame prediction. I originally used apply them to data from laparoscopic surgeries in scope of my Masterthesis. The data is therefore omitted and the old instructions are moved here.  
+This project includes implementation of generative models for action-based video frame prediction. I originally used apply them to data from laparoscopic surgeries in scope of my Masterthesis. .  
 
 # Data preparation
 
-Before starting the data preprocessing the data should be divided into train/val/test directories (it is important that they have these 3 exact names). Each directory should have one rollout inside with corresponding images and xml files:
-
-    ├── train
-    │   ├── rollout_a1_dir           
-    │   ├── rollout_a2_dir                            
-    │   └── ...                 
-    ├── val
-    │   ├── rollout_b1_dir           
-    │   ├── rollout_b2_dir           
-    │   └── ...                 
-    ├── test
-    │   ├── rollout_c1_dir           
-    │   ├── rollout_c2_dir           
-    │   └── ...                 
-
-All data preprocessing scripts use the same params file. Edit the [params/data_preprocessing.yaml](params/data_preprocessing.yaml) according to your data.
-The final dataset for the models should be of the type npz. 
-
+The data is therefore omitted and the old instructions are moved [here.](data_preprocessing/README.md)
 It is possible to generate a synthetic dataset using pybullet, more details are to be found in  [simulator/README.md](simulator/README.md)
 
 
@@ -77,7 +60,7 @@ All evaluations measure mean SSIM and PSNR on validation data and also generate 
 python svg_models/eval_svg_lp.py --params params/svg_lp_eval_params.yaml 
 ```
 
-#Results
+# Results
 The SVG-LP model shows superior performance in situation where there is stochasticity involved e.g. when there are many different futures, it can predict them and choose the correct. On the example below in contrast to SVG-LP, the baseline learned one outcome - in every case it predicts that the object will exit the view space.  The green frames are inputed frames and the blue frames are predicted frames.  
 ![Figure 3. Baseline](imgs/gif1.gif)
 
