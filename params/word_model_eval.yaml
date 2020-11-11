@@ -1,0 +1,20 @@
+cuda: False
+seed: 1
+path_data: "/home/ivkic_urise/rollouts_subset_1/data_norm/"
+action_size: 7
+batch_size: 1
+latent_size: 128
+img_size: 64
+seq_len: 9
+log_interval: 10
+logdir: "/home/ivkic_urise/new_training_feb/"
+hidden_size: 512
+num_gmm: 5
+buffer_size: 1
+env: "MDRNN eval pybullet"
+red_size: 64
+n_eval: 9
+n_past: 4
+nsample: 20
+test_buffer_size: 1
+eval_dir: "/home/ivkic_urise/new_training_feb/eval_blue"

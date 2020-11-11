@@ -1,0 +1,7 @@
+path_data: "/home/dajana/rollouts_npz"
+model_path: "/home/dajana/trained_models/svg_lp_logdir/svg/checkpoint.tar"
+logdir: "/home/dajana/trained_models/svg_lp_logdir/svg_lp_eval"
+seed: 1
+test_buffer_size: 1
+nsample: 100
+batch_size: 12

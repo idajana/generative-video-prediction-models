@@ -1,0 +1,40 @@
+# learning rate
+learning_rate: 0.002
+# momentum term for adam
+beta1: 0.9
+batch_size: 7 #32
+# base directory to save logs
+logdir: "/home/dajana/trained_models/svg_lp_logdir"
+#base directory to save models
+modeldir: "/home/dajana/trained_models/svg_lp_logdir/svg"
+epochs: 100
+img_size: 64
+# number of frames to condition on
+n_past: 4
+# number of frames to predict during eval
+n_eval: 9
+rnn_size: 256
+posterior_rnn_layers: 1
+predictor_rnn_layers: 2
+prior_rnn_layers: 1 # ONLY FOR LEARNED PRIOR
+z_dim: 128 #dimensionality of z_t
+g_dim: 128 #dimensionality of encoder output vector and decoder input vector
+beta: 0.001
+last_frame_skip: true
+seed: 1
+n_channels: 3
+path_data: "/home/dajana/rollouts_npz"
+env: "SVG_LP Phantom"
+sample: False
+cuda: True
+# sequence length
+seq_len: 9
+
+# how many files are import to RAM memory
+train_buffer_size: 1
+test_buffer_size: 1
+shorten_epoch: 10000000 # set to number of files after the epoch should be shortened
+action_size: 6 #7 for Phantom
+plot_visdom: false
+noreload: true
+sample: false

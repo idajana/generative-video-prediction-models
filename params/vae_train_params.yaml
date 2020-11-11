@@ -1,0 +1,16 @@
+path_data: "/home/dajana/rollouts_npz"
+batch_size: 1000
+epochs: 200
+cuda: True
+seed: 1
+log_interval: 10
+latent_size: 128
+img_size: 64
+sample: True
+logdir: "/home/dajana/trained_models/wm_models/"
+noreload: True
+env: 'VAE MIX SUBSET'
+loss: 'mix' #possible values ['ms-ssim', 'mse', 'mix']
+learning_rate: 0.001
+alpha: 0.8
+visualize: False

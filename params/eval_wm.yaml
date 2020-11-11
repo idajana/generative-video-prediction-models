@@ -1,0 +1,20 @@
+cuda: False
+seed: 1
+path_data: "/home/dajana/rollouts_npz"
+action_size: 6
+batch_size: 1
+latent_size: 128
+img_size: 64
+seq_len: 19
+log_interval: 10
+logdir: "/home/dajana/trained_models/wm_models"
+hidden_size: 512
+num_gmm: 5
+buffer_size: 100
+env: "MDRNN eval pybullet"
+red_size: 64
+n_eval: 19
+n_past: 9
+nsample: 20
+test_buffer_size: 50
+eval_dir: "/home/dajana/trained_models/wm_models/final_eval"

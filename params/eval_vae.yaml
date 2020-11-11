@@ -1,0 +1,11 @@
+#the directory before "vae"
+vae_dir: "/home/dajana/trained_models"
+path_data: "/home/dajana/rollouts_npz"
+batch_size: 10
+latent_size: 128
+img_size: 64
+res_size: 64
+cuda: True
+seed: 1
+report_dir: "/home/dajana/trained_models/wm_models/vae_report"
+load_report: False #"/home/ivkic_urise/Documents/vae_report/vae_report.json"

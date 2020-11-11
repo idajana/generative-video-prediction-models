@@ -1,0 +1,19 @@
+path_data: "rollouts_npz"
+batch_size: 50
+epochs: 45
+cuda: True
+seed: 1
+log_interval: 10
+latent_size: 128
+img_size: 64
+res_size: 64
+logdir: "logdir"
+action_size: 6 #7
+hidden_size: 512
+red_size: 64
+size: 64
+num_gmm: 5
+seq_len: 9
+train_buffer_size: 15
+test_buffer_size: 12
+env: "MDRNN Train phantom subset"

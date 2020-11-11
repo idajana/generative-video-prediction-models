@@ -1,0 +1,18 @@
+# Path to input images
+data_path: "/home/dajana/sve_za_dipl/phantom_subset"  #"/media/urise/SFB125/PhantomVersuch/21-8/20/"
+
+# Directory to save the resized images
+path_resized:  "/home/dajana/sve_za_dipl/test_out" #"/srv/ml_data/ivkic/phantom64px/"
+
+# Directory where to store the rollouts
+out_path: "/home/dajana/sve_za_dipl/rollouts_subset_1"
+
+side: "left"
+in_width: 1920
+in_height: 540
+resize_dim: 64
+crop_width: 1620
+verbose: True
+save_data: False
+plot_histogram: True
+min_rollout_len: 20
