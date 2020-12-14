@@ -37,7 +37,7 @@ class SVG_LP_TRAINER():
         torch.backends.cudnn.benchmark = True
         self.device = torch.device("cuda" if self.cuda else "cpu")
 
-
+        # Load or init models
         if params["noreload"]:
             self.frame_predictor = lstm_models.lstm(params["g_dim"] +params["action_size"], params["g_dim"], params["rnn_size"], params["predictor_rnn_layers"],
                                            params["batch_size"]).cuda()
@@ -49,6 +49,7 @@ class SVG_LP_TRAINER():
         self.encoder.apply(svp_utils.init_weights)
         self.decoder.apply(svp_utils.init_weights)
 
+        # Init optimizers
         self.frame_predictor_optimizer = optim.Adam(self.frame_predictor.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
         self.encoder_optimizer = optim.Adam(self.encoder.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
         self.decoder_optimizer = optim.Adam(self.decoder.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
@@ -57,7 +58,7 @@ class SVG_LP_TRAINER():
             self.img_plotter = VisdomImagePlotter(env_name=params['env'])
 
 
-
+        # Select transformations
         transform = transforms.Lambda(
             lambda x: np.transpose(x, (0, 3, 1, 2)) / 255)
         self.train_loader = DataLoader(
@@ -139,6 +140,7 @@ class SVG_LP_TRAINER():
 
 
     def plot_rec(self, x, actions, epoch):
+        # Generate a frame sequence visualization
         self.frame_predictor.hidden = self.frame_predictor.init_hidden()
         gen_seq = []
         gen_seq.append(x[:,0])
@@ -336,14 +338,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='SVP_BASELINE')
     parser.add_argument('--params', default="params/svg_fp_train_params.yaml", metavar='yaml',
                         help="Path to file containing parameters for training")
-    args = parser.parse_args()
+    args = parser.parse_args(
 
+    # Open config file
     with open(args.params, 'r') as stream:
         try:
             params = yaml.safe_load(stream)
             print(params)
         except yaml.YAMLError as exc:
-            print(exc)
+            print(exc
+    # Check if directories exists, if not, create them
     check_dir(params["logdir"])
     out_path = params["logdir"] + "/train_params.json"
     with open(out_path, 'w') as outfile:
@@ -365,7 +369,7 @@ if __name__ == "__main__":
     cum_test_loss = []
     epochs_list = []
 
-
+    # Start training
     for epoch in range(1, epochs + 1):
         train_loss = train(epoch)
         test_loss = test(epoch)

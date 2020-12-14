@@ -161,6 +161,7 @@ class SVG_LP_TRAINER():
 
 
     def plot_rec(self, x, actions, epoch):
+        # Generate a frame sequence visualization
         self.frame_predictor.hidden = self.frame_predictor.init_hidden()
         self.posterior.hidden = self.posterior.init_hidden()
         gen_seq = []
@@ -347,6 +348,7 @@ class SVG_LP_TRAINER():
 
 
     def checkpoint(self, cur_best, test_loss):
+        # Save best and
         best_filename = os.path.join(self.svg_dir, 'best.tar')
         filename = os.path.join(self.svg_dir, 'checkpoint.tar')
         is_best = not cur_best or test_loss < cur_best
@@ -385,6 +387,8 @@ if __name__ == "__main__":
             print(params)
         except yaml.YAMLError as exc:
             print(exc)
+
+    # Check if directories exists, if not, create them
     check_dir(params["logdir"])
     out_path = params["logdir"] + "/train_params.json"
     with open(out_path, 'w') as outfile:

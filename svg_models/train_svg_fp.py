@@ -33,6 +33,7 @@ class SVG_FP_TRAINER():
         # Fix numeric divergence due to bug in Cudnn
         torch.backends.cudnn.benchmark = True
         self.device = torch.device("cuda" if self.cuda else "cpu")
+        # Initialize model
         if params["noreload"]:
             self.frame_predictor = lstm_models.lstm(params["g_dim"] + params["z_dim"]+params["action_size"], params["g_dim"], params["rnn_size"], params["predictor_rnn_layers"],
                                                params["batch_size"]).cuda()
@@ -48,7 +49,7 @@ class SVG_FP_TRAINER():
         self.encoder.apply(svp_utils.init_weights)
         self.decoder.apply(svp_utils.init_weights)
 
-
+        # Init optimizers
         self.frame_predictor_optimizer = optim.Adam(self.frame_predictor.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
         self.posterior_optimizer =  optim.Adam(self.posterior.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
         self.encoder_optimizer = optim.Adam(self.encoder.parameters(), lr=params["learning_rate"], betas=(params["beta1"], 0.999))
@@ -58,7 +59,7 @@ class SVG_FP_TRAINER():
             self.img_plotter = VisdomImagePlotter(env_name=params['env'])
 
 
-
+        # Select transformations
         transform = transforms.Lambda(
             lambda x: np.transpose(x, (0, 3, 1, 2)) / 255)
         self.train_loader = DataLoader(
@@ -81,6 +82,7 @@ class SVG_FP_TRAINER():
 
 
     def plot_samples(self, x, actions, epoch):
+        # Create a gif of sequences
         nsample = 5
         gen_seq = [[] for i in range(nsample)]
 
@@ -360,7 +362,9 @@ if __name__ == "__main__":
             params = yaml.safe_load(stream)
             print(params)
         except yaml.YAMLError as exc:
-            print(exc)
+            print(exc
+
+    # Check if directories exists, if not, create them
     check_dir(params["logdir"])
     out_path = params["logdir"] + "/train_params.json"
     with open(out_path, 'w') as outfile:
@@ -372,6 +376,7 @@ if __name__ == "__main__":
     #device = torch.device('cuda:1')
     #torch.cuda.set_device(device)
 
+    # Initialize training
     trainer = SVG_FP_TRAINER(params)
     trainer.init_svg_model()
     train = partial(trainer.data_pass, train=True)
@@ -382,7 +387,7 @@ if __name__ == "__main__":
     cum_test_loss = []
     epochs_list = []
 
-
+    # Start training
     for epoch in range(1, epochs + 1):
         train_loss = train(epoch)
         test_loss = test(epoch)

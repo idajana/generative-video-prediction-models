@@ -48,14 +48,3 @@ def mix_loss(recon_x, x, mu, logsigma, alpha):
     loss = (KLD/NORM + BCE)*alpha+(1-alpha)*msssim_loss
     return loss, (KLD/NORM + BCE).item()*alpha, (1-alpha)*msssim_loss.item()
 
-#UNNORMn
-    # ef mse_loss_unnorm(recon_x, x, mu, logsigma):
-    """ VAE loss function """
-    BCE = F.mse_loss(recon_x, x, size_average=False)
-
-    # see Appendix B from VAE paper:
-    # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
-    # https://arxiv.org/abs/1312.6114
-    # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
-    KLD = -0.5 * torch.sum(1 + 2 * logsigma - mu.pow(2) - (2 * logsigma).exp())
-    return BCE + KLD

@@ -27,12 +27,14 @@ class VAE_TRAINER():
             'mix': mix_loss
         }[params["loss"]]
 
-        #choose device
+        # Choose device
         self.cuda = params["cuda"] and torch.cuda.is_available()
         torch.manual_seed(params["seed"])
         # Fix numeric divergence due to bug in Cudnn
         torch.backends.cudnn.benchmark = True
         self.device = torch.device("cuda" if self.cuda else "cpu")
+
+        # Prepare data transformations
         red_size = params["img_size"]
         transform_train = transforms.Compose([
             transforms.ToPILImage(),
@@ -47,7 +49,7 @@ class VAE_TRAINER():
             transforms.ToTensor(),
         ])
 
-
+        # Initialize Data loaders
         op_dataset = RolloutObservationDataset(params["path_data"], transform_train, train=True)
         val_dataset = RolloutObservationDataset(params["path_data"], transform_val, train=False)
 
@@ -55,6 +57,8 @@ class VAE_TRAINER():
                                                    shuffle=True, num_workers=0)
         self.eval_loader = torch.utils.data.DataLoader(val_dataset, batch_size=params["batch_size"],
                                                   shuffle=False, num_workers=0)
+
+        # Initialize model and hyperparams
         self.model = VAE(nc=3, ngf=64, ndf=64, latent_variable_size=params["latent_size"], cuda=self.cuda).to(self.device)
         self.optimizer = optim.Adam(self.model.parameters())
         self.init_vae_model()
@@ -70,6 +74,7 @@ class VAE_TRAINER():
         mse_loss = 0
         ssim_loss = 0
         train_loss = 0
+        # Train step
         for batch_idx, data in enumerate(self.train_loader):
             data = data.to(self.device)
             self.optimizer.zero_grad()
@@ -100,7 +105,8 @@ class VAE_TRAINER():
             mean_mse_loss, mean_ssim_loss))
         if self.visualize:
             self.plotter.plot('loss', 'train', 'VAE Train Loss', epoch, mean_train_loss)
-        return mean_train_loss
+        return
+
     def eval(self):
         self.model.eval()
         # dataset_test.load_next_buffer()
@@ -109,6 +115,7 @@ class VAE_TRAINER():
         ssim_loss = 0
         vis = True
         with torch.no_grad():
+            # Eval step
             for data in self.eval_loader:
                 data = data.to(self.device)
                 recon_batch, mu, logvar = self.model(data)
@@ -153,6 +160,7 @@ class VAE_TRAINER():
             self.optimizer.load_state_dict(state['optimizer'])
 
     def checkpoint(self, cur_best, eval_loss):
+        # Save the best and last checkpoint
         best_filename = os.path.join(self.vae_dir, 'best.tar')
         filename = os.path.join(self.vae_dir, 'checkpoint.tar')
         is_best = not cur_best or eval_loss < cur_best
@@ -188,6 +196,8 @@ if __name__ == "__main__":
             print(params)
         except yaml.YAMLError as exc:
             print(exc)
+
+    # Create relevant directories
     check_dir(params["logdir"])
     out_path = os.path.join(params["logdir"], "train_params.json")
     with open(out_path, 'w') as outfile:
@@ -201,6 +211,8 @@ if __name__ == "__main__":
     cum_train_loss = []
     cum_eval_loss = []
     epochs_list = []
+
+    # Start training
     for epoch in range(1, epochs + 1):
         train_loss = trainer.train(epoch)
         eval_loss = trainer.eval()

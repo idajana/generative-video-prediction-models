@@ -38,7 +38,7 @@ device = torch.device("cuda" if cuda else "cpu")
 torch.cuda.empty_cache()
 #transform=transforms.ToTensor()
 
-
+# Init Data loader and model
 transform = transforms.Lambda(
     lambda x: np.transpose(x, (0, 3, 1, 2)) / 255)
 train_loader = DataLoader(
