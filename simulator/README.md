@@ -1,4 +1,4 @@
-##Generating data with Pybullet
+## Generating data with Pybullet
 
 This part is used to generate synthetic data using Pybullet. The showed command will 
 
